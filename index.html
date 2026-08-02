@@ -1,1 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Simplifiquei TEC Builder Elite</title>
+
+<meta name="theme-color"
+content="#0F172A">
+
+<meta name="description"
+content="Aplicativo de treino Full Body">
+
+<link rel="manifest"
+href="manifest.json">
+
+<link rel="stylesheet"
+href="style.css">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ========================= -->
+<!-- SPLASH SCREEN -->
+<!-- ========================= -->
+
+<div id="splash">
+
+    <div class="splash-content">
+
+        <img
+            src="assets/logo.png"
+            class="logo-splash"
+            alt="Logo">
+
+        <h1>
+
+            Simplifiquei TEC Builder
+
+        </h1>
+
+        <p>
+
+            Disciplina • Foco • Evolução
+
+        </p>
+
+        <div class="loader"></div>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- APLICATIVO -->
+<!-- ========================= -->
+
+<div id="app">
+
+<header class="header">
+
+<div class="header-left">
+
+<img
+src="assets/logo-horizontal.png"
+class="logo-header"
+alt="Logo">
+
+<div>
+
+<h2>
+
+Simplifiquei TEC
+
+</h2>
+
+<span>
+  <!-- ========================= -->
+<!-- ABAS DOS TREINOS -->
+<!-- ========================= -->
+
+<section class="tabs">
+
+<button class="tab active"
+onclick="mostrarTreino('A')">
+
+Full Body A
+
+</button>
+
+<button class="tab"
+onclick="mostrarTreino('B')">
+
+Full Body B
+
+</button>
+
+<button class="tab"
+onclick="mostrarTreino('C')">
+
+Full Body C
+
+</button>
+
+</section>
+
+<!-- ========================= -->
+<!-- OS CARDS DOS EXERCÍCIOS
+SERÃO GERADOS PELO treinos.js
+========================= -->
+
+<div id="listaExercicios">
+
+</div>
+
+</main>
+
+<!-- ========================= -->
+<!-- BOTÃO FLUTUANTE -->
+<!-- ========================= -->
+
+<button id="fabCronometro"
+onclick="abrirCronometro()">
+
+⏱
+
+</button>
+
+<!-- ========================= -->
+<!-- MODAL DO CRONÔMETRO -->
+<!-- ========================= -->
+
+<div id="cronometroModal"
+class="modal">
+
+<div class="modal-content">
+
+<h2>
+
+Cronômetro
+
+</h2>
+
+<div id="cronometroGrande">
+
+90
+
+</div>
+
+<div class="timer-buttons">
+
+<button onclick="startTimer(60)">
+60 s
+</button>
+
+<button onclick="startTimer(90)">
+90 s
+</button>
+
+<button onclick="startTimer(120)">
+120 s
+</button>
+
+<button onclick="startTimer(180)">
+180 s
+</button>
+
+</div>
+
+<button
+onclick="fecharCronometro()">
+
+Fechar
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MENU INFERIOR -->
+<!-- ========================= -->
+
+<nav class="bottom-nav">
+
+<button
+class="active">
+
+🏠
+
+<span>
+
+Início
+
+</span>
+
+</button>
+
+<button>
+
+💪
+
+<span>
+
+Treinos
+
+</span>
+
+</button>
+
+<button>
+
+📊
+
+<span>
+
+Progresso
+
+</span>
+
+</button>
+
+<button>
+
+⚙
+
+<span>
+
+Ajustes
+
+</span>
+
+</button>
+
+</nav>
+
+<script src="treinos.js"></script>
+
+<script src="app.js"></script>
+
+</div>
+<!-- ========================= -->
+<!-- TOAST DE NOTIFICAÇÕES -->
+<!-- ========================= -->
+
+<div id="toast" class="toast">
+
+    <span id="toastMessage">
+
+        Treino salvo com sucesso!
+
+    </span>
+
+</div>
+
+<!-- ========================= -->
+<!-- OVERLAY DO MENU -->
+<!-- ========================= -->
+
+<div id="overlay"></div>
+
+<!-- ========================= -->
+<!-- RODAPÉ -->
+<!-- ========================= -->
+
+<footer class="footer">
+
+    <p>
+
+        © 2026 Simplifiquei TEC Builder Elite
+
+    </p>
+
+</footer>
+
+</div>
+<!-- Fim do APP -->
+
+<!-- ========================= -->
+<!-- SCRIPTS -->
+<!-- ========================= -->
+
+<script src="treinos.js"></script>
+
+<script src="app.js"></script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const splash = document.getElementById("splash");
+    const app = document.getElementById("app");
+
+    app.style.display = "none";
+
+    setTimeout(() => {
+
+        splash.style.opacity = "0";
+
+        setTimeout(() => {
+
+            splash.style.display = "none";
+            app.style.display = "block";
+
+        }, 500);
+
+    }, 2000);
+
+});
+
+</script>
+
+</body>
+
+</html>
