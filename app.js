@@ -499,3 +499,571 @@ iniciarAplicativo();
 mostrarTreino("A");
 
 };
+/* ==========================================
+SALVAR CARGAS
+========================================== */
+
+function salvarCarga(indice){
+
+const campo=document.getElementById(
+
+"carga_"+indice
+
+);
+
+if(!campo) return;
+
+localStorage.setItem(
+
+"carga_"+treinoAtual+"_"+indice,
+
+campo.value
+
+);
+
+}
+
+
+function carregarCarga(indice){
+
+return localStorage.getItem(
+
+"carga_"+treinoAtual+"_"+indice
+
+)||"";
+
+}
+
+
+/* ==========================================
+SALVAR OBSERVAÇÕES
+========================================== */
+
+function salvarObservacao(indice){
+
+const campo=document.getElementById(
+
+"obs_"+indice
+
+);
+
+if(!campo) return;
+
+localStorage.setItem(
+
+"obs_"+treinoAtual+"_"+indice,
+
+campo.value
+
+);
+
+}
+
+
+function carregarObservacao(indice){
+
+return localStorage.getItem(
+
+"obs_"+treinoAtual+"_"+indice
+
+)||"";
+
+}
+
+
+/* ==========================================
+CRIAR CARD
+SUBSTITUA O card.innerHTML
+PELA VERSÃO ABAIXO
+========================================== */
+
+card.innerHTML=`
+
+<div class="exercise-title">
+
+${exercicio.nome}
+
+</div>
+
+<div class="exercise-info">
+
+<span>
+
+${exercicio.grupo}
+
+</span>
+
+<span>
+
+${exercicio.reps}
+
+</span>
+
+</div>
+
+<div class="series">
+
+${seriesHTML}
+
+</div>
+
+<div class="campo">
+
+<label>
+
+Carga
+
+</label>
+
+<input
+
+id="carga_${indice}"
+
+type="text"
+
+placeholder="Ex.: 80 kg"
+
+value="${carregarCarga(indice)}"
+
+onchange="salvarCarga(${indice})"
+
+>
+
+</div>
+
+<div class="campo">
+
+<label>
+
+Observações
+
+</label>
+
+<textarea
+
+id="obs_${indice}"
+
+placeholder="Anotações..."
+
+onchange="salvarObservacao(${indice})"
+
+>${carregarObservacao(indice)}</textarea>
+
+</div>
+
+<div class="exercise-actions">
+
+<button
+
+class="btn-video"
+
+onclick="window.open('${exercicio.video}','_blank')">
+
+▶ Ver execução
+
+</button>
+
+<button
+
+class="btn-save"
+
+onclick="startTimer(${exercicio.descanso})">
+
+⏱ ${exercicio.descanso}s
+
+</button>
+
+</div>
+
+<p class="observacao">
+
+${exercicio.observacao}
+
+</p>
+
+`;
+
+
+/* ==========================================
+ESTATÍSTICAS
+========================================== */
+
+function atualizarDashboard(){
+
+const checks=document.querySelectorAll(".serie input");
+
+let feitos=0;
+
+checks.forEach(c=>{
+
+if(c.checked){
+
+feitos++;
+
+}
+
+});
+
+document.getElementById(
+
+"treinosRealizados"
+
+).innerHTML=
+
+feitos;
+
+document.getElementById(
+
+"streak"
+
+).innerHTML=
+
+localStorage.getItem("streak")||0;
+
+}
+
+
+/* ==========================================
+SALVAR STREAK
+========================================== */
+
+function salvarStreak(){
+
+let streak=
+
+parseInt(
+
+localStorage.getItem("streak")||0
+
+);
+
+streak++;
+
+localStorage.setItem(
+
+"streak",
+
+streak
+
+);
+
+atualizarDashboard();
+
+}
+/* ==========================================
+TEMA
+========================================== */
+
+function alterarTema(cor){
+
+document.documentElement.style.setProperty(
+
+"--blue",
+
+cor
+
+);
+
+localStorage.setItem(
+
+"tema",
+
+cor
+
+);
+
+}
+
+
+function carregarTema(){
+
+const tema=
+
+localStorage.getItem("tema");
+
+if(!tema) return;
+
+document.documentElement.style.setProperty(
+
+"--blue",
+
+tema
+
+);
+
+}
+
+
+/* ==========================================
+SALVAR PESO
+========================================== */
+
+function salvarPeso(){
+
+const peso=prompt(
+
+"Informe seu peso atual (kg):"
+
+);
+
+if(!peso) return;
+
+localStorage.setItem(
+
+"peso",
+
+peso
+
+);
+
+document.getElementById(
+
+"pesoAtual"
+
+).innerHTML=
+
+peso+" kg";
+
+}
+
+
+function carregarPeso(){
+
+const peso=
+
+localStorage.getItem("peso");
+
+if(peso){
+
+document.getElementById(
+
+"pesoAtual"
+
+).innerHTML=
+
+peso+" kg";
+
+}
+
+}
+
+
+/* ==========================================
+BACKUP
+========================================== */
+
+function exportarBackup(){
+
+const dados={
+
+localStorage:{...localStorage}
+
+};
+
+const blob=new Blob(
+
+[JSON.stringify(dados)],
+
+{type:"application/json"}
+
+);
+
+const a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="backup_treino.json";
+
+a.click();
+
+}
+
+
+function importarBackup(event){
+
+const arquivo=event.target.files[0];
+
+if(!arquivo) return;
+
+const leitor=new FileReader();
+
+leitor.onload=function(e){
+
+const dados=
+
+JSON.parse(e.target.result);
+
+Object.keys(
+
+dados.localStorage
+
+).forEach(chave=>{
+
+localStorage.setItem(
+
+chave,
+
+dados.localStorage[chave]
+
+);
+
+});
+
+location.reload();
+
+};
+
+leitor.readAsText(arquivo);
+
+}
+
+
+/* ==========================================
+INSTALAR PWA
+========================================== */
+
+let installPrompt=null;
+
+window.addEventListener(
+
+"beforeinstallprompt",
+
+(e)=>{
+
+e.preventDefault();
+
+installPrompt=e;
+
+});
+
+function instalarApp(){
+
+if(!installPrompt) return;
+
+installPrompt.prompt();
+
+}
+
+
+/* ==========================================
+NOTIFICAÇÕES
+========================================== */
+
+function solicitarNotificacao(){
+
+if(
+
+Notification.permission==="default"
+
+){
+
+Notification.requestPermission();
+
+}
+
+}
+
+
+function notificar(texto){
+
+if(
+
+Notification.permission==="granted"
+
+){
+
+new Notification(
+
+texto
+
+);
+
+}
+
+}
+
+
+/* ==========================================
+VIBRAÇÃO
+========================================== */
+
+function vibrar(){
+
+if(
+
+navigator.vibrate
+
+){
+
+navigator.vibrate(
+
+[200,100,200]
+
+);
+
+}
+
+}
+
+
+/* ==========================================
+SOM
+========================================== */
+
+function tocarSom(){
+
+const audio=new Audio(
+
+"assets/sounds/finish.mp3"
+
+);
+
+audio.play();
+
+}
+
+
+/* ==========================================
+FINAL DO TIMER
+========================================== */
+
+function finalizarTimer(){
+
+clearInterval(intervalo);
+
+tocarSom();
+
+vibrar();
+
+mostrarToast(
+
+"Descanso finalizado!"
+
+);
+
+notificar(
+
+"Hora da próxima série!"
+
+);
+
+}
+
+
+/* ==========================================
+INICIALIZAÇÃO FINAL
+========================================== */
+
+window.onload=()=>{
+
+carregarTema();
+
+carregarPeso();
+
+solicitarNotificacao();
+
+iniciarAplicativo();
+
+mostrarTreino("A");
+
+};
